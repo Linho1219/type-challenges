@@ -22,7 +22,16 @@
 
 /* _____________ 你的代码 _____________ */
 
-type MyAwaited<T> = any
+// type MyAwaited<T> = T extends { then: (onfulfilled: (res: infer K) => any) => any } ?
+//   (K extends { then: Function } ?
+//     MyAwaited<K> :
+//     K)
+//   : never
+type MyAwaited<T> = T extends PromiseLike<infer K> ?
+  (K extends PromiseLike<any> ?
+    MyAwaited<K> :
+    K)
+  : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
